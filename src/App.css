@@ -20,3 +20,24 @@
 .App-link {
   color: #09d3ac;
 }
+
+#nav{
+  position: absolute;
+  top: 1rem;
+}
+
+.navButton{
+  margin: 0.2rem;
+}
+
+#checkText{
+  color: lightgray;
+}
+
+#validText{
+  color: green;
+}
+
+#invalidText{
+  color: red
+}
