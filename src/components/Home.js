@@ -22,6 +22,17 @@ class Home extends Component {
             accounts: newAccounts
         })
      }
+
+     removeAccount = (userName) =>{
+        const newAccounts = this.state.accounts.filter(account => 
+            account.user !== userName
+        )
+
+        this.setState({
+            accounts: newAccounts
+        })
+     }
+
      checkLanguages = (languages, searchTerm) => {
         if (languages.length < 1) {
             this.addNewAccount({user: searchTerm, language: "No Repos"})
@@ -53,7 +64,6 @@ class Home extends Component {
         }
 
         const favourite = Object.keys(countedLanguages).reduce((a, b) => countedLanguages[a] > countedLanguages[b] ? a : b)
-
         this.addNewAccount({user: searchTerm, language: favourite})
     }
 
@@ -71,6 +81,7 @@ class Home extends Component {
         return (
         <Router>
           <div id="nav">
+            <h4 id="mainHeader">Github Favourite Langauge</h4>
             <button onClick={this.changePage} className={this.state.page === "home" ? "navButton selected": "navButton"}>
                 <Link className="navLink" to="/">Accounts</Link>
             </button>
@@ -88,6 +99,7 @@ class Home extends Component {
               <Route path="/">
                   <Accounts
                     accounts={this.state.accounts}
+                    removeAccount={this.removeAccount}
                   />
               </Route>
           </Switch>
