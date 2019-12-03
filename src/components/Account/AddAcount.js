@@ -1,54 +1,46 @@
 import React, { Component } from 'react';
 
-class AddLanguage extends Component {
+class AddAccount extends Component {
     state = { 
-        searchTerm: "",  
-        symbol: ""
+        searchTerm: "",
+        warning: false
 }
 
-    validateSearchTerm = () => {
-        fetch("https://api.github.com/users/" + this.state.searchTerm)
+    updateSearch = (e) => {
+        const searchTerm = e.target.value
+            this.setState({searchTerm, warning: false},
+        )            
+    }
+
+    handleSubmit = () => {
+        const users = this.props.accounts.map(account => account.user)
+        if (users.includes(this.state.searchTerm.toLowerCase())){
+            console.log("here")
+            this.setState({warning: true})
+            return
+        }
+        fetch(`https://api.github.com/users/${this.state.searchTerm}/repos?per_page=50&sort=created`)
         .then(resp => resp.json())
         .then(data => {
-            if (data.message && data.message === "Not Found") {
-                this.setState({symbol: "invalid"})
-            }
+            if(data.message && data.message === "Not Found"){this.setState({warning: true})}
             else{
-                console.log(data)
-                this.setState({symbol: "valid"})
+                this.setState({warning: false})
+                const languages = data.map(repos => repos.language)
+                this.props.checkLanguages(languages, this.state.searchTerm.toLowerCase())
             }
         })
     }
 
-    updateSearch = (e) => {
-        const searchTerm = e.target.value
-    
-        if (searchTerm.length === 0) {
-            this.setState({symbol: ""})
-        }
-        else{
-            this.setState({searchTerm, symbol: "check"},
-            () => {
-                this.validateSearchTerm()
-            })        
-        }
-        
-    }
-
     render() { 
         return ( <div>
-            <h2>Add a new github account to find the users favourite language</h2>
-            <input id="search" onChange={this.updateSearch} type="text" placeholder="Github Username" />
-            {this.state.symbol === "check"
-            ? <p id="checkText">Checking</p>
-            : this.state.symbol === "valid"
-                ? <p id="validText">Valid</p>
-                : this.state.symbol === "invalid"
-                    ? <p id="invalidText"> invalid</p>
-                    : null
+            <h4 className="pageTitle">Add a new github account to find the users favourite language</h4>
+            <input id="search" onChange={this.updateSearch} type="text" placeholder="Github Username" value={this.state.searchTerm}/>
+            <button onClick={this.handleSubmit} id="submitAccount">Add User</button>
+            {this.state.warning === true ? <p>This user is not valid or has already been added</p>
+                : null
             }
         </div> );
     }
 }
  
-export default AddLanguage;
+export default AddAccount;

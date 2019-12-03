@@ -22,22 +22,38 @@
 }
 
 #nav{
+  top: 0;
+  height: 3rem;
   position: absolute;
-  top: 1rem;
+  border-bottom: black double 0.2rem;
+  width: 100%;
+}
+
+.navLink{
+  padding-left: 5rem;
+  padding-right: 5rem;
+  color: lightgray;
 }
 
 .navButton{
   margin: 0.2rem;
+  margin-bottom: 0;
+  background-color: #282c34;
 }
 
-#checkText{
-  color: lightgray;
+.navButton.selected{
+  background-color: #383d48;
+  border: inset;
 }
 
-#validText{
-  color: green;
+.pageTitle{
+  position: absolute;
+  top: 4rem;
+  left: 0;
+  right: 0;
 }
 
-#invalidText{
-  color: red
+.tableEntry{
+  width: 15rem;
+  border-bottom: black ridge;
 }
